@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        logicalFilePath="db.changelog-1.0.xml"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create-staff-db" author="tim">
+        <sql>
+            create table staff
+            (
+                id                 serial primary key,
+                created_at         timestamp with time zone default now(),
+                updated_at         timestamp with time zone,
+                disabled_at        timestamp with time zone,
+                email              character varying(255) not null,
+                phone              character varying(255),
+                encrypted_password character varying(255),
+                is_admin           boolean,
+                first_name         text,
+                last_name          text
+            );
+        </sql>
+    </changeSet>
+    <changeSet id="unavailability-table" author="tim">
+        <sql>
+            create table unavailability
+            (
+                id         serial primary key,
+                staff_id   bigint not null references staff (id),
+                created_at timestamp with time zone default now(),
+                start_time timestamp with time zone,
+                end_time   timestamp with time zone
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>
